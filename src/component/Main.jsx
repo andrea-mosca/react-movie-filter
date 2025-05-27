@@ -7,15 +7,22 @@ export default function Main() {
 
   const [genreFilter, setGenreFilter] = useState("");
   const [filteredFilms, setFilteredFilms] = useState(films);
+  const [titleFilter, setTitleFilter] = useState("");
 
   useEffect(() => {
-    if (genreFilter === "") {
-      setFilteredFilms(films);
-    } else {
-      const filtered = films.filter((film) => film.genre === genreFilter);
-      setFilteredFilms(filtered);
+    let updatedFilms = films;
+
+    if (genreFilter !== "") {
+      updatedFilms = updatedFilms.filter((film) => film.genre === genreFilter);
     }
-  }, [genreFilter]);
+
+    if (titleFilter !== "") {
+      updatedFilms = updatedFilms.filter((film) => film.title === titleFilter);
+    }
+
+    setFilteredFilms(updatedFilms);
+  }, [genreFilter, titleFilter]);
+
   return (
     <main>
       <div className="container">
@@ -29,6 +36,18 @@ export default function Main() {
             {genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
+              </option>
+            ))}
+          </select>
+          <h2>filtra per titolo</h2>
+          <select
+            value={titleFilter}
+            onChange={(e) => setTitleFilter(e.target.value)}
+          >
+            <option value="">nessun filtro</option>
+            {films.map((film) => (
+              <option key={film.title} value={film.title}>
+                {film.title}
               </option>
             ))}
           </select>
